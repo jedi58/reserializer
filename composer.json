@@ -1,0 +1,23 @@
+{
+    "name": "jedi58/Reserializer",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "David G. Paul"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "symfony/console": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "autoload": {
+        "psr-4": { "jedi58\\Reserializer\\": "src/" },
+        "exclude-from-classmap": [
+            "/tests/"
+        ]
+    }
+}
