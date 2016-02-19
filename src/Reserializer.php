@@ -22,7 +22,7 @@ class Reserializer
   /**
    *
    */
-  public function parse($value)
+  public static function parse($value)
   {
     $contents = '';
     if (preg_match(self::TYPE_ARRAY, $value, $output)) {
@@ -48,7 +48,7 @@ class Reserializer
   /**
    *
    */
-  public function reserialize($value) 
+  public static function reserialize($value) 
   {
     return serialize(self::parse($value));
   }
