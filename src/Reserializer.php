@@ -47,7 +47,7 @@ class Reserializer
     } elseif (preg_match(self::TYPE_INTEGER, $value, $output)) {
       return (int) (!empty($output[1]) ? $output[1] : null);
     } elseif (preg_match(self::TYPE_BOOL, $value, $output)) {
-      return (bool) !empty($output[1]) ? $output[1] : null;
+      return (bool) (!empty($output[1]) ? $output[1] : null);
     } elseif (preg_match(self::TYPE_STRING, $value, $output)) {
       return !empty($output[2]) ? $output[2] : null;
     }
