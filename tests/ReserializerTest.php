@@ -12,7 +12,7 @@ class ReserializerTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @test
 	 */
-	public function testParse_Int()
+	public function testParseInt()
 	{
 		$this->assertSame(32, Reserializer::parse('i:32;'));
 	}
@@ -27,8 +27,9 @@ class ReserializerTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame(
 			array('a', 'b'),
 			Reserializer::parse(
-			'a:2:{i:0;s:1:"a";i:1;s:1:"b";}'
-		));
+				'a:2:{i:0;s:1:"a";i:1;s:1:"b";}'
+			)
+		);
 	}
 
 	public function testParseAssociativeArray()
@@ -39,7 +40,8 @@ class ReserializerTest extends \PHPUnit_Framework_TestCase
 				'b' => 'def'
 			),
 			Reserializer::parse(
-			'a:2:{s:1:"a";s:3:"abc";s:1:"b";s:3:"def";}'
-		));	
+				'a:2:{s:1:"a";s:3:"abc";s:1:"b";s:3:"def";}'
+			)
+		);	
 	}
 }
