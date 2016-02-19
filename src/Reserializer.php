@@ -45,4 +45,11 @@ class Reserializer
     }
     return null;
   }
+  /**
+   *
+   */
+  public function reserialize($value) 
+  {
+    return serialize(self::parse($value));
+  }
 }
