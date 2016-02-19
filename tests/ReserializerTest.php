@@ -54,4 +54,17 @@ class ReserializerTest extends \PHPUnit_Framework_TestCase
 			)
 		);	
 	}
+
+	public function testParseObject()
+	{
+		$temp = new \stdClass();
+		$temp->test = 1;
+		$temp->test2 = 'abc';
+		$this->assertSame(
+			serialize($temp),
+			serialize(Reserializer::parse(
+				'O:8:"stdClass":2:{s:4:"test";i:1;s:5:"test2";s:3:"abc";}'
+			))
+		);
+	}
 }
