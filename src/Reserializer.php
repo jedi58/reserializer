@@ -32,7 +32,9 @@ class Reserializer
         for ($i = 0; $i < sizeof($output); $i += 2) {
           $key = self::parse($output[$i]);
           $value = self::parse($output[$i + 1]);
-          if (!empty($key) && !empty($value)) {
+          if (is_int($key)) {
+            $contents[] = $value;
+          } elseif (!empty($key)) {
             $contents[$key] = $value;
           }
         }
