@@ -26,6 +26,10 @@ class Reserializer
   /**
    *
    */
+  const TYPE_OBJECT = '/^O:([0-9]+):"(.*?)":([0-9]+):{(.*?)}/';
+  /**
+   *
+   */
   public static function parse($value)
   {
     $contents = '';
@@ -40,6 +44,19 @@ class Reserializer
             $contents[] = $value;
           } elseif (!empty($key)) {
             $contents[$key] = $value;
+          }
+        }
+      }
+      return $contents;
+    } elseif (preg_match(self::TYPE_OBJECT, $value, $output)) {
+      $contents = new \stdClass(); // @todo replace this with $output[2]
+      if (!empty($output[4])) {
+        $output = mb_split(';', $output[4]);
+        for ($i = 0; $i < sizeof($output); $i += 2) {
+          $key = self::parse($output[$i]);
+          $value = self::parse($output[$i + 1]);
+          if (!empty($key)) {
+            $contents->$key = $value;
           }
         }
       }
