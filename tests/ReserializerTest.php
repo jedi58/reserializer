@@ -17,6 +17,16 @@ class ReserializerTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame(32, Reserializer::parse('i:32;'));
 	}
 
+	public function testParseBoolFalse()
+	{
+		$this->assertSame(false, Reserializer::parse('b:0;'));
+	}
+
+	public function testParseBoolTrue()
+	{
+		$this->assertSame(true, Reserializer::parse('b:1;'));
+	}
+
 	public function testParseString()
 	{
 		$this->assertSame('something', Reserializer::parse('s:9:"something";'));
