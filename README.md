@@ -1,6 +1,8 @@
 # Reserializer
 [![Build Status](https://travis-ci.org/jedi58/Reserializer.svg)](https://travis-ci.org/jedi58/Reserializer)
+[![StyleCI](https://styleci.io/repos/52094139/shield)](https://styleci.io/repos/52094139)
 [![Code Climate](https://codeclimate.com/github/jedi58/Reserializer/badges/gpa.svg)](https://codeclimate.com/github/jedi58/Reserializer)
+[![Coverage Status](https://coveralls.io/repos/github/jedi58/Reserializer/badge.svg?branch=master)](https://coveralls.io/github/jedi58/Reserializer?branch=master)
 
 PHP class that will take a serialised object and parse it, ignoring the sizes specified. This is useful when serialized objects are corrupted and need fixing
 
