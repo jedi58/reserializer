@@ -7,7 +7,7 @@ namespace jedi58\Reserializer;
  */
 class Reserializer
 {
-  /**
+    /**
    * RegExp for detecting serialised arrays
    */
   const TYPE_ARRAY = '/^a:([0-9]+):{(.*?)}/';
@@ -34,28 +34,28 @@ class Reserializer
    */
   public static function parse($value)
   {
-    $contents = '';
-    if (preg_match(self::TYPE_ARRAY, $value, $output)) {
-      $contents = array();
-      if (!empty($output[2])) {
-        self::processArray($contents, $output[2]);
+      $contents = '';
+      if (preg_match(self::TYPE_ARRAY, $value, $output)) {
+          $contents = array();
+          if (!empty($output[2])) {
+              self::processArray($contents, $output[2]);
+          }
+          return $contents;
+      } elseif (preg_match(self::TYPE_OBJECT, $value, $output)) {
+          $className = class_exists($output[2]) ? $output[2] : '\stdClass';
+          $contents = new $className();
+          if (!empty($output[4])) {
+              self::processArray($contents, $output[4]);
+          }
+          return $contents;
+      } elseif (preg_match(self::TYPE_INTEGER, $value, $output)) {
+          return (int) (!empty($output[1]) ? $output[1] : null);
+      } elseif (preg_match(self::TYPE_BOOL, $value, $output)) {
+          return (bool) (!empty($output[1]) ? $output[1] : null);
+      } elseif (preg_match(self::TYPE_STRING, $value, $output)) {
+          return !empty($output[2]) ? $output[2] : null;
       }
-      return $contents;
-    } elseif (preg_match(self::TYPE_OBJECT, $value, $output)) {
-      $className = class_exists($output[2]) ? $output[2] : '\stdClass';
-      $contents = new $className();
-      if (!empty($output[4])) {
-        self::processArray($contents, $output[4]);
-      }
-      return $contents;
-    } elseif (preg_match(self::TYPE_INTEGER, $value, $output)) {
-      return (int) (!empty($output[1]) ? $output[1] : null);
-    } elseif (preg_match(self::TYPE_BOOL, $value, $output)) {
-      return (bool) (!empty($output[1]) ? $output[1] : null);
-    } elseif (preg_match(self::TYPE_STRING, $value, $output)) {
-      return !empty($output[2]) ? $output[2] : null;
-    }
-    return null;
+      return null;
   }
   /**
    * Takes serialised string separated by semi-colons and
@@ -65,28 +65,28 @@ class Reserializer
    */
   private static function processArray(&$output, $values)
   {
-    $values = mb_split(';', $values);
-    for ($i = 0; $i < sizeof($values); $i += 2) {
-      $key = self::parse($values[$i]);
-      $value = !empty($values[$i + 1]) ? self::parse($values[$i + 1]) : null;
-      if (is_int($key)) {
-        $output[] = $value;
-      } elseif (!empty($key)) {
-        if (gettype($output) == 'array') {
-          $output[$key] = $value;
-        } else {
-          $output->$key = $value;
-        }
+      $values = mb_split(';', $values);
+      for ($i = 0; $i < sizeof($values); $i += 2) {
+          $key = self::parse($values[$i]);
+          $value = !empty($values[$i + 1]) ? self::parse($values[$i + 1]) : null;
+          if (is_int($key)) {
+              $output[] = $value;
+          } elseif (!empty($key)) {
+              if (gettype($output) == 'array') {
+                  $output[$key] = $value;
+              } else {
+                  $output->$key = $value;
+              }
+          }
       }
-    }
   }
   /**
    * Processes the provided input and reserialises for output
    * @param string $value The serialized data to repair
    * @return string The fixed serialized data
    */
-  public static function reserialize($value) 
+  public static function reserialize($value)
   {
-    return serialize(self::parse($value));
+      return serialize(self::parse($value));
   }
 }
