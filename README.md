@@ -17,3 +17,12 @@ The above example contains an invalid serialized object as the string is one cha
 Reserializer::reserialize('s:21:"https://www.google.com";')
 ```
 The expected output for this is `s:22:"https://www.google.com";`. It is possible to use this for more complicated examples of type bool, int, string, array, and objects. In the case of objects they will however be converted into `stdClass`.
+
+
+## Testing
+
+There are a number of unit tests which can be executed by running the following from your checkout
+
+```bash
+$  phpunit
+```
