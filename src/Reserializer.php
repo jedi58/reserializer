@@ -39,7 +39,7 @@ class Reserializer
         $output = mb_split(';', $output[2]);
         for ($i = 0; $i < sizeof($output); $i += 2) {
           $key = self::parse($output[$i]);
-          $value = self::parse($output[$i + 1]);
+          $value = !empty($output[$i + 1]) ? self::parse($output[$i + 1]) : null;
           if (is_int($key)) {
             $contents[] = $value;
           } elseif (!empty($key)) {
@@ -54,7 +54,7 @@ class Reserializer
         $output = mb_split(';', $output[4]);
         for ($i = 0; $i < sizeof($output); $i += 2) {
           $key = self::parse($output[$i]);
-          $value = self::parse($output[$i + 1]);
+          $value = !empty($output[$i + 1]) ? self::parse($output[$i + 1]) : null;
           if (!empty($key)) {
             $contents->$key = $value;
           }
