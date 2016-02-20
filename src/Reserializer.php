@@ -42,7 +42,8 @@ class Reserializer
       }
       return $contents;
     } elseif (preg_match(self::TYPE_OBJECT, $value, $output)) {
-      $contents = new \stdClass(); // @todo replace this with $output[2]
+      $className = class_exists($output[2]) ? $output[2] : '\stdClass';
+      $contents = new $className();
       if (!empty($output[4])) {
         self::processArray($contents, $output[4]);
       }
