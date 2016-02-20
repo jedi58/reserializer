@@ -67,4 +67,12 @@ class ReserializerTest extends \PHPUnit_Framework_TestCase
             ))
         );
     }
+    
+    public function testReserializeArray()
+    {
+        $this->assertSame(
+        	serialize(array('a', 'b')),
+        	Reserializer::reserialize('a:2:{i:0;s:1:"a";i:1;s:1:"b";}')
+    	);
+    }
 }
