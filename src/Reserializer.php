@@ -3,32 +3,34 @@
 namespace jedi58\Reserializer;
 
 /**
- *
+ * Class for repairing serialised data
  */
 class Reserializer
 {
   /**
-   *
+   * RegExp for detecting serialised arrays
    */
   const TYPE_ARRAY = '/^a:([0-9]+):{(.*?)}/';
   /**
-   *
+   * RegExp for detecting serialised integers
    */
   const TYPE_INTEGER = '/^i:([0-9]+)/';
   /**
-   *
+   * RegExp for detecting serialised strings
    */
   const TYPE_STRING = '/^s:([0-9]+):"(.*?)"/';
   /**
-   *
+   * RegExp for detecting serialised boolean values
    */
   const TYPE_BOOL = '/^b:([01])/';
   /**
-   *
+   * RegExp for detecting serialised objects
    */
   const TYPE_OBJECT = '/^O:([0-9]+):"(.*?)":([0-9]+):{(.*?)}/';
   /**
-   *
+   * Parses the given string into the detected type
+   * @param string $value The serialised string to parse
+   * @return mixed The output of parsing the string
    */
   public static function parse($value)
   {
@@ -36,29 +38,13 @@ class Reserializer
     if (preg_match(self::TYPE_ARRAY, $value, $output)) {
       $contents = array();
       if (!empty($output[2])) {
-        $output = mb_split(';', $output[2]);
-        for ($i = 0; $i < sizeof($output); $i += 2) {
-          $key = self::parse($output[$i]);
-          $value = !empty($output[$i + 1]) ? self::parse($output[$i + 1]) : null;
-          if (is_int($key)) {
-            $contents[] = $value;
-          } elseif (!empty($key)) {
-            $contents[$key] = $value;
-          }
-        }
+        self::processArray($contents, $output[2]);
       }
       return $contents;
     } elseif (preg_match(self::TYPE_OBJECT, $value, $output)) {
       $contents = new \stdClass(); // @todo replace this with $output[2]
       if (!empty($output[4])) {
-        $output = mb_split(';', $output[4]);
-        for ($i = 0; $i < sizeof($output); $i += 2) {
-          $key = self::parse($output[$i]);
-          $value = !empty($output[$i + 1]) ? self::parse($output[$i + 1]) : null;
-          if (!empty($key)) {
-            $contents->$key = $value;
-          }
-        }
+        self::processArray($contents, $output[4]);
       }
       return $contents;
     } elseif (preg_match(self::TYPE_INTEGER, $value, $output)) {
@@ -71,7 +57,32 @@ class Reserializer
     return null;
   }
   /**
-   *
+   * Takes serialised string separated by semi-colons and
+   * process the result into the provided array or object
+   * @param mixed $output The array or Object to add data to (passed by reference)
+   * @param string $values The values to add to the array or object
+   */
+  private static function processArray(&$output, $values)
+  {
+    $values = mb_split(';', $values);
+    for ($i = 0; $i < sizeof($values); $i += 2) {
+      $key = self::parse($values[$i]);
+      $value = !empty($values[$i + 1]) ? self::parse($values[$i + 1]) : null;
+      if (is_int($key)) {
+        $output[] = $value;
+      } elseif (!empty($key)) {
+        if (gettype($output) == 'array') {
+          $output[$key] = $value;
+        } else {
+          $output->$key = $value;
+        }
+      }
+    }
+  }
+  /**
+   * Processes the provided input and reserialises for output
+   * @param string $value The serialized data to repair
+   * @return string The fixed serialized data
    */
   public static function reserialize($value) 
   {
