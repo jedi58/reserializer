@@ -1,10 +1,12 @@
 {
-    "name": "jedi58/Reserializer",
+    "name": "jedi58/reserializer",
     "type": "library",
     "license": "MIT",
     "authors": [
         { "name": "David G. Paul" }
     ],
+    "homepage": "https://github.com/jedi58/reserializer",
+    "keywords": ["serialize", "data", "fix", "objects"],
     "require": {
         "php": ">=5.5.9",
         "symfony/console": "*"
