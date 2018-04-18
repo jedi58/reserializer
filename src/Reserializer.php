@@ -65,10 +65,12 @@ class Reserializer
    */
   private static function processArray(&$output, $values)
   {
+      $values = preg_replace('/&([a-z]+);/', '%HTML_ENTITY%$1%HTML_ENTITY%', $values);
       $values = mb_split(';', $values);
       for ($i = 0; $i < sizeof($values); $i += 2) {
           $key = self::parse($values[$i]);
           $value = !empty($values[$i + 1]) ? self::parse($values[$i + 1]) : null;
+          $value = preg_replace('/%HTML_ENTITY%([a-z]+)%HTML_ENTITY%/', '&$1;', $value);
           if (is_int($key)) {
               $output[] = $value;
           } elseif (!empty($key)) {
