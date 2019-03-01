@@ -6,7 +6,7 @@ php:
 
 before_script:
   - wget http://getcomposer.org/composer.phar
-  - composer require satooshi/php-coveralls:dev-master
+  - composer require php-coveralls/php-coveralls
   - composer install --no-interaction
   - composer dump-autoload --optimize
 
